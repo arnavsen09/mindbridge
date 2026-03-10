@@ -169,23 +169,16 @@ export async function runFullTranslationPipeline(text: string): Promise<FullTran
     };
   }
   
-  // Step 2 & 3: Can run in parallel
-  const [emotion] = await Promise.all([
-    translateEmotions(text),
-    generateConversationGuide(text, { 
-      core_emotions: [], 
-      underlying_needs: [], 
-      intensity_level: 'mild' 
-    } as EmotionTranslationResult)
-  ]);
+  // Step 2: Translate emotions first
+  const emotion = await translateEmotions(text);
   
-  // Re-run guide with actual emotion data
-  const finalGuide = await generateConversationGuide(text, emotion);
+  // Step 3: Generate guide with actual emotion data
+  const guide = await generateConversationGuide(text, emotion);
   
   return {
     crisis,
     emotion,
-    guide: finalGuide
+    guide
   };
 }
 
