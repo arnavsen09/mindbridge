@@ -31,10 +31,6 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
   const [error, setError] = useState('');
   const [expired, setExpired] = useState(false);
 
-  useEffect(() => {
-    fetchSession();
-  }, [fetchSession]);
-
   const fetchSession = useCallback(async () => {
     try {
       // Check if token exists and is valid
@@ -75,6 +71,10 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
       setLoading(false);
     }
   }, [token]);
+
+  useEffect(() => {
+    fetchSession();
+  }, [fetchSession]);
 
   if (loading) {
     return (
